@@ -10,11 +10,6 @@ Scenario: Login feito com sucesso
   Then o usuário “João” acessa a sua conta com sucesso
   And vai para a página inicial
 
-Scenario: Login incorreto
-  Given o usuário “João” está na tela “Login”
-  And já possui uma conta no sistema
-  When o usuário “João” preenche incorretamente o campo de "e-mail" ou "senha"
-  Then o usuário “João” recebe uma mensagem de e-mail/senha inválido
 
 Scenario: Tentativa de login sem conta criada
   Given o usuário “João” está na tela “Login”
@@ -34,7 +29,14 @@ Scenario: Acionamento de “Esqueci minha senha”
   When o usuário “João” selecionar “Esqueci minha senha”
   Then o usuário “João” é enviado para a tela “Esqueci minha senha”
 
+
 Scenario: Login com campo não preenchido
   Given o usuário “João” está na tela “Login”
   When o usuário “João” deixa o campo “e-mail” ou “senha” vazio 
   Then o usuário “João” recebe uma mensagem de erro “Todos os campos devem ser preenchidos”
+
+Scenario: Login incorreto
+  Given o usuário “João” está na tela “Login”
+  And já possui uma conta no sistema
+  When o usuário “João” preenche incorretamente o campo de "e-mail" ou "senha"
+  Then o usuário “João” recebe uma mensagem de e-mail/senha inválido
