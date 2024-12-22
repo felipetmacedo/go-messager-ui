@@ -11,13 +11,6 @@ Scenario: Login feito com sucesso
   And vai para a página inicial
 
 
-Scenario: Tentativa de login sem conta criada
-  Given o usuário “João” está na tela “Login”
-  And não possui uma conta no sistema 
-  When o usuário “João” preenche o “login” e “senha”
-  Then o usuário “João” recebe uma mensagem de e-mail/senha inválido
-
-
 Scenario: Acionamento de “Cadastre-se”
   Given o usuário “João” está na tela “Login”
   When o usuário “João” selecionar “Cadastre-se”
@@ -39,4 +32,11 @@ Scenario: Login incorreto
   Given o usuário “João” está na tela “Login”
   And já possui uma conta no sistema
   When o usuário “João” preenche incorretamente o campo de "e-mail" ou "senha"
+  Then o usuário “João” recebe uma mensagem de e-mail/senha inválido
+
+
+Scenario: Tentativa de login sem conta criada
+  Given o usuário “João” está na tela “Login”
+  And não possui uma conta no sistema 
+  When o usuário “João” preenche o “login” e “senha”
   Then o usuário “João” recebe uma mensagem de e-mail/senha inválido
