@@ -53,3 +53,14 @@ Scenario: Acionamento de “Resetar senha”
     Given o usuário “João” está na tela “Esqueci minha senha”
     When o usuário “João” preencher o campo de “e-mail” com um endereço válido
     And acionar o “botão” “Resetar senha”
+    Then o usuário “João” recebe uma mensagem indicando que um link de redefinição de senha foi enviado para o seu e-mail
+    And o link é enviado caso o e-mail esteja cadastrado na aplicação
+
+
+Scenario: Acionamento de “Resetar senha” sem preencher o e-mail
+    Given o usuário “João” está na tela “Esqueci minha senha”
+    When o usuário “João” deixa o campo “e-mail” vazio
+    And aciona o “botão” “Resetar Senha”
+    Then o usuário “João” recebe uma mensagem de erro “Todos os campos devem ser preenchidos”
+
+
