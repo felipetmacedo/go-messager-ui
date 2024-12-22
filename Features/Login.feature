@@ -48,3 +48,9 @@ Scenario: O usuário esqueceu a senha
   And o usuário "João" esqueceu a sua senha
   When o usuário “João” realizar a ação “Esqueci minha senha”
   Then o usuário “João” é redirecionado para a tela “Esqueci minha senha”
+
+
+Scenario: Acionamento de “Login” na tela "Esqueci minha senha"
+    Given o usuário “João” está na tela “Esqueci minha senha”
+    When o usuário “João” acionar o “botão” “Login”
+    Then o usuário “João” é redirecionado para a tela “Login” 
