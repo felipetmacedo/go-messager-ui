@@ -47,3 +47,9 @@ Scenario: O usuário esqueceu a senha
   And o usuário "João" esqueceu a sua senha
   When o usuário “João” escolher a opção “Esqueci minha senha”
   Then o usuário “João” vai para a tela “Esqueci minha senha”
+
+
+Scenario: Acionamento de “Resetar senha”
+    Given o usuário “João” está na tela “Esqueci minha senha”
+    When o usuário “João” preencher o campo de “e-mail” com um endereço válido
+    And acionar o “botão” “Resetar senha”
