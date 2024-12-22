@@ -40,3 +40,10 @@ Scenario: Tentativa de login sem conta criada
   And não possui uma conta no sistema 
   When o usuário “João” preenche o “login” e “senha”
   Then o usuário “João” recebe uma mensagem de e-mail/senha inválido
+
+
+Scenario: O usuário esqueceu a senha
+  Given o usuário “João” está na tela “Login”
+  And o usuário "João" esqueceu a sua senha
+  When o usuário “João” escolher a opção “Esqueci minha senha”
+  Then o usuário “João” vai para a tela “Esqueci minha senha”
