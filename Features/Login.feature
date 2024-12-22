@@ -46,5 +46,5 @@ Scenario: Tentativa de login sem conta criada
 Scenario: O usuário esqueceu a senha
   Given o usuário “João” está na tela “Login”
   And o usuário "João" esqueceu a sua senha
-  When o usuário “João” escolher a opção “Esqueci minha senha”
-  Then o usuário “João” vai para a tela “Esqueci minha senha”
+  When o usuário “João” realizar a ação “Esqueci minha senha”
+  Then o usuário “João” é redirecionado para a tela “Esqueci minha senha”
