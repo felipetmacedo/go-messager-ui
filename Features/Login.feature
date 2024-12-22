@@ -39,4 +39,4 @@ Scenario: Login incorreto
   Given o usuário “João” está na tela “Login”
   And já possui uma conta no sistema
   When o usuário “João” preenche incorretamente o campo de "e-mail" ou "senha"
-  Then o usuário “João” recebe uma mensagem de e-mail/senha inválido
+  Then o usuário “João” recebe uma mensagem de "e-mail" ou "senha" inválido
