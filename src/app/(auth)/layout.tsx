@@ -14,7 +14,7 @@ export default function AuthLayout({
   return (
     <html lang="pt-br">
       <body className={inter.className}>
-      <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden">
+      <div className="flex flex-col md:flex-row h-screen w-screen md:overflow-hidden">
       <motion.div 
         className="flex flex-col items-center justify-center bg-primary w-full md:w-1/2 h-1/2 md:h-full"
         initial={{ x: "-100%", opacity: 0 }}
