@@ -1,5 +1,7 @@
-import Link from "next/link";
+"use client";
 
+import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,8 +12,21 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import resetpassword from "@/services/resetpassword";
+
 
 export function ForgotPasswordForm() {
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      await resetpassword({ email });
+    } catch (error) {
+      console.error('Error sending password reset email:', error);
+    }
+  };
+
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
@@ -21,7 +36,7 @@ export function ForgotPasswordForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
@@ -29,6 +44,8 @@ export function ForgotPasswordForm() {
                 id="email"
                 type="email"
                 placeholder="m@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
