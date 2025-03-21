@@ -79,6 +79,7 @@ export function ListUserButton() {
 				<div className="space-y-4">
 					<Input
 						type="text"
+						id = "search-bar"
 						placeholder="Buscar contato"
 						onChange={(e) => setSearchQuery(e.target.value)}
 						value={searchQuery}
@@ -90,11 +91,11 @@ export function ListUserButton() {
 							Carregando contatos...
 						</div>
 					) : contacts.length === 0 ? (
-						<div className="py-8 text-center text-muted-foreground">
+						<div id= "empty-msg" className="py-8 text-center text-muted-foreground">
 							Não há contatos cadastrados
 						</div>
 					) : filteredContacts.length === 0 ? (
-						<div className="py-8 text-center text-muted-foreground">
+						<div id="empty-src" className="py-8 text-center text-muted-foreground">
 							Contato não encontrado
 						</div>
 					) : (

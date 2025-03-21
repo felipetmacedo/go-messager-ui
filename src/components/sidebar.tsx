@@ -51,6 +51,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
             </Link>
 
             <Link
+              id = "listCtt"
               href="#"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "icon" }),
