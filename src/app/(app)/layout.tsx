@@ -9,6 +9,8 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 
+import ProtectedRoute from "@/components/protected-route";
+
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-br">
@@ -21,7 +23,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           }
         >
           <AppSidebar />
-          <SidebarInset>{children}</SidebarInset>
+          <SidebarInset>
+            <ProtectedRoute>{children}</ProtectedRoute>
+          </SidebarInset>
         </SidebarProvider>
       </body>
     </html>
