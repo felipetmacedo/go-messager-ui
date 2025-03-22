@@ -26,7 +26,6 @@ export function ForgotPasswordForm() {
     const startTime = Date.now();
     try {
       await resetpassword({ email });
-      router.push("/reset-password-link");
     } catch (error) {
       console.error('Error sending password reset email:', error);
     } finally {
