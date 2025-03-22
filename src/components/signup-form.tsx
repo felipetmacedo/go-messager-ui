@@ -45,14 +45,23 @@ export function SignupForm() {
     event.preventDefault();
     if (!passwordsMatch) return;
     try {
-      await signup({
+      const response = await signup({
         name,
         email,
         password,
-        url_img: profilePicture as string,
+        photo_url: profilePicture as string,
       });
+
+      console.log(response);
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setProfilePicture(ProfileIcon);
+      window.location.href = "/signin";
     } catch (error) {
       console.error(error);
+      alert("An error occurred. Please try again.");
     }
   };
 
@@ -76,7 +85,7 @@ export function SignupForm() {
               className="cursor-pointer hidden" />
             {profilePicture && <Image src={profilePicture} width={90} height={0} alt="Profile Picture" onClick={handleFileInput} className="rounded-full mx-auto border-2 border-primary cursor-pointer hover:opacity-60" />}
             <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Name *</Label>
               <Input
                 id="name"
                 type="text"
@@ -86,7 +95,7 @@ export function SignupForm() {
                 required />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Email *</Label>
               <Input
                 id="email"
                 type="email"
@@ -97,7 +106,7 @@ export function SignupForm() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Password *</Label>
               <Input
                 id="password"
                 type="password"
@@ -107,7 +116,7 @@ export function SignupForm() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="confirm_password">Confirm Password</Label>
+              <Label htmlFor="confirm_password">Confirm Password *</Label>
               <Input
                 id="confirm_password"
                 type="password"
@@ -123,7 +132,7 @@ export function SignupForm() {
             <Button
               type="submit"
               className="w-full "
-              disabled={!passwordsMatch}
+              disabled={!passwordsMatch || !name || !email || !password || !confirmPassword}
             >
               Sign Up
             </Button>
