@@ -13,16 +13,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { login } from "@/services/auth";
+import { useRouter } from "next/navigation";
+
 
 export function SigninForm() {
 
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
+  const router = useRouter();
   
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       await login({ email, password });
+      router.push("/dashboard");
     } catch (error) {
       console.error('Error logging in:', error);
     }

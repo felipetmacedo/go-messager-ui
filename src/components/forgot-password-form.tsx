@@ -13,15 +13,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import resetpassword from "@/services/resetpassword";
+import { useRouter } from "next/navigation";
 
 
 export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       await resetpassword({ email });
+      router.push("/reset-password-link");
     } catch (error) {
       console.error('Error sending password reset email:', error);
     }
