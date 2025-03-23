@@ -78,8 +78,8 @@ export function Sidebar({ isCollapsed, isMobile }: SidebarProps) {
         // map chats for expected format
         const mappedIndividualChats = individualChats.map((chat: any) => ({
           id: chat.id,
-          name: chat.user?.name || "Teste",
-          avatar: chat.receiver.avatar || "",
+          name: chat.receiver?.name || chat.user.name,
+          avatar: chat.receiver.avatar || chat.user.avatar,
           messages: chat.messages,
           variant: "secondary",
         }));
