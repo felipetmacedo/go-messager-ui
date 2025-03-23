@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MoreHorizontal, SquarePen, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import api from "@/services/api";
 import {
   Tooltip,
   TooltipContent,
@@ -26,14 +27,93 @@ interface SidebarProps {
   isMobile: boolean;
 }
 
-export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
+interface Chat {
+  id: number;
+  user_id: number;
+  receiver_id: number;
+  group_id?: number;
+  name: string; // Nome do chat (usuário ou grupo)
+  avatar: string; // URL do avatar
+  messages: {
+    id: number;
+    name: string;
+    message: JSON;
+    isLoading?: boolean;
+  }[];
+  created_at: string;
+  updated_at: string;
+}
+
+interface Group {
+  id: number;
+  name: string;
+  description?: string;
+  group_members: GroupMember[];
+  created_at: string;
+  updated_at: string;
+}
+
+interface GroupMember {
+  id: number;
+  group_id: number;
+  user_id: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export function Sidebar({ isCollapsed, isMobile }: SidebarProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  {/* filtered chats for conditional rendering */}
+  const [chats, setChats] = useState<Chat[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // get all chats from back-end function
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        setLoading(true);
+
+        // get all individual chats from the user logged in
+        const { data: individualChats } = await api.get("/chats/user/1");
+
+        // // get all group chats from the user logged in
+        // const { data: groupChats } = await api.get("/groups/user/1");
+
+        // map chats for expected format
+        const mappedIndividualChats = individualChats.map((chat: any) => ({
+          id: chat.id,
+          name: chat.receiver.name,
+          avatar: chat.receiver.avatar || "",
+          messages: chat.messages,
+          variant: "secondary",
+        }));
+
+        console.log("INDIVIDUAL CHATS", individualChats);
+
+        // const mappedGroupChats = groupChats.map((group: any) => ({
+        //   id: group.id,
+        //   name: group.name,
+        //   avatar: "",
+        //   messages: [], // messages can be loaded later
+        //   variant: "secondary",
+        // }));
+
+        // combine individual and group chats
+        setChats([...mappedIndividualChats]);
+      } catch (error) {
+        console.error("Erro ao buscar os chats:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchChats();
+  }, []);
+
+  // filter chats by search term
   const filteredChats = chats.filter((chat) =>
     chat.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  return (  
+  return (
     <div
       data-collapsed={isCollapsed}
       className="relative group flex flex-col h-full bg-muted/10 dark:bg-muted/20 gap-4 p-2 data-[collapsed=true]:p-2 "
