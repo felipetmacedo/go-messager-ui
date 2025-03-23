@@ -15,7 +15,7 @@ import { uploadToCloudinary } from "@/utils/cloudinaryService";
 import Image, { StaticImageData } from "next/image";
 import { ProfileIcon } from "@/assets";
 import signup from "@/services/auth";
-import Router from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 
 export function SignupForm() {
@@ -43,7 +43,7 @@ export function SignupForm() {
     setProfilePicture(imageUrl);
   };
 
-  const router = Router.useRouter();
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
