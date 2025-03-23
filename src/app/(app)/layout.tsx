@@ -1,28 +1,28 @@
-import { Inter } from "next/font/google";
+import type { Metadata } from "next";
+import "../globals.css";
+import { ThemeProvider } from "next-themes";
 
-const inter = Inter({ subsets: ["latin"] });
+export const metadata: Metadata = {
+  title: "Go Messager",
+  description: "Chat/message components for Go Messager",
+};
 
-import { AppSidebar } from "@/components/app-sidebar";
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
 
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar";
-
-export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-br">
-      <body className={inter.className}>
-        <SidebarProvider
-          style={
-            {
-              "--sidebar-width": "350px",
-            } as React.CSSProperties
-          }
-        >
-          <AppSidebar />
-          <SidebarInset>{children}</SidebarInset>
-        </SidebarProvider>
+    <html lang="en">
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="white" enableSystem>
+          <main className="flex h-[calc(100dvh)] flex-col">
+            <div className="z-10 border rounded-lg w-full h-full text-sm flex">
+              {children}
+            </div>
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );
