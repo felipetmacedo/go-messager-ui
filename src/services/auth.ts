@@ -4,7 +4,7 @@ interface SignupProps {
     name: string;
     email: string;
     password: string;
-    url_img: string;
+    photo_url: string;
 }
 
 interface LoginProps {
