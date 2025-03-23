@@ -22,7 +22,6 @@ const signup = async (data:SignupProps) => {
   }
 }
 
-export default signup;
 const login = async (data:LoginProps) => {
   try {
     const response = await api.post("/auth", data);

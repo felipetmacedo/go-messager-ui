@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { uploadToCloudinary } from "@/utils/cloudinaryService";
 import Image, { StaticImageData } from "next/image";
 import { ProfileIcon } from "@/assets";
-import signup from "@/services/auth";
+import { signup } from "@/services/auth";
 import { useRouter } from 'next/navigation';
 
 
