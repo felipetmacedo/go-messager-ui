@@ -23,8 +23,6 @@ interface UserProfileModalProps {
 const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) => {
   const [username, setUsername] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
-  const [tempUsername, setTempUsername] = useState("");
-  const [tempPhotoUrl, setTempPhotoUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -37,9 +35,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
         try {
           const userProfile = await getUserInfo();
           setUsername(userProfile.name);
-          setPhotoUrl(userProfile.photo);
-          setTempUsername(userProfile.name);
-          setTempPhotoUrl(userProfile.photo);
+          setPhotoUrl(userProfile.photo || defaultImageBase64);
         } catch (error) {
           console.error("Error fetching user profile:", error);
         } finally {
@@ -50,46 +46,15 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
     }
   }, [isOpen]);
 
-  const handleSave = async () => {
-    setIsSaving(true);
-    try {
-      await editUserInfo({ name: tempUsername, photo: tempPhotoUrl });
-      setUsername(tempUsername);
-      setPhotoUrl(tempPhotoUrl);
-      onClose();
-    } catch (error) {
-      console.error("Error saving user profile:", error);
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>User Profile</DialogTitle>
-          <DialogDescription>Edit your profile information and click save.</DialogDescription>
         </DialogHeader>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <>
-            <div className="flex items-center gap-4 mb-4">
-              <Avatar>
-                <AvatarImage src={tempPhotoUrl || defaultImageBase64} alt="User Photo" className="w-10 h-10" />
-              </Avatar>
-              <Label>{username}</Label>
-            </div>
-            <Label>Username</Label>
-            <Input value={tempUsername} onChange={(e) => setTempUsername(e.target.value)} />
-            <Label>Photo URL</Label>
-            <Input value={tempPhotoUrl} onChange={(e) => setTempPhotoUrl(e.target.value)} />
-          </>
-        )}
-        <DialogFooter>
-          <Button onClick={handleSave} disabled={isSaving}>{isSaving ? "Saving..." : "Save"}</Button>
-        </DialogFooter>
+        <Avatar>
+          <AvatarImage src={photoUrl} alt="User Photo" />
+        </Avatar>
       </DialogContent>
     </Dialog>
   );
