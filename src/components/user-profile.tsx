@@ -3,71 +3,77 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getUserInfo, editUserInfo } from '@/services/user';
 
-interface UserProfilePageProps {
+interface UserProfileModalProps {
+    isOpen: boolean;
     onClose: () => void;
 }
 
-const UserProfilePage: React.FC<UserProfilePageProps> = ({ onClose }) => {
+const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) => {
     const [username, setUsername] = useState('');
     const [photoUrl, setPhotoUrl] = useState('');
-    const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const fetchUserProfile = async () => {
-            try {
-                const userProfile = await getUserInfo();
-                setUsername(userProfile.name);
-                setPhotoUrl(userProfile.photo);
-            } catch (error) {
-                console.error('Error fetching user profile:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchUserProfile();
-    }, []);
+        if (isOpen) {
+            const fetchUserProfile = async () => {
+                try {
+                    const userProfile = await getUserInfo();
+                    setUsername(userProfile.name);
+                    setPhotoUrl(userProfile.photo);
+                } catch (error) {
+                    console.error('Error fetching user profile:', error);
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+            fetchUserProfile();
+        }
+    }, [isOpen]);
 
     const handleSave = async () => {
         try {
             await editUserInfo({ name: username, photo: photoUrl });
-            setIsEditing(false);
+            onClose();
         } catch (error) {
             console.error('Error saving user profile:', error);
         }
     };
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>User Profile</CardTitle>
-                <CardDescription>Edit your profile information</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <Label>Username</Label>
-                <Input value={username} onChange={(e) => setUsername(e.target.value)} />
-                <Label>Photo URL</Label>
-                <Input value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} />
-                <Button onClick={handleSave}>Save</Button>
-                <Button onClick={onClose}>Close</Button>
-            </CardContent>
-        </Card>
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>User Profile</DialogTitle>
+                    <DialogDescription>Edit your profile information</DialogDescription>
+                </DialogHeader>
+                {isLoading ? (
+                    <div>Loading...</div>
+                ) : (
+                    <>
+                        <Label>Username</Label>
+                        <Input value={username} onChange={(e) => setUsername(e.target.value)} />
+                        <Label>Photo URL</Label>
+                        <Input value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} />
+                    </>
+                )}
+                <DialogFooter>
+                    <Button onClick={handleSave}>Save</Button>
+                    <Button variant="outline" onClick={onClose}>Close</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 };
 
-export default UserProfilePage;
+export default UserProfileModal;
