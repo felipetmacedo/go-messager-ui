@@ -122,7 +122,7 @@ export function SignupForm() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 mb-4">
               <Label htmlFor="confirm_password">Confirm Password *</Label>
               <Input
                 id="confirm_password"
