@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "Chat/message components for Go Messager",
 };
 
+import ProtectedRoute from "@/components/protected-route";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -19,7 +21,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="white" enableSystem>
           <main className="flex h-[calc(100dvh)] flex-col">
             <div className="z-10 border rounded-lg w-full h-full text-sm flex">
-              {children}
+              <ProtectedRoute>{children}</ProtectedRoute>
             </div>
           </main>
         </ThemeProvider>
