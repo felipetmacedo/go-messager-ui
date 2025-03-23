@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { getUserInfo, editUserInfo } from "@/services/user";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { uploadToCloudinary } from "@/utils/cloudinaryService";
 
 interface UserProfileModalProps {
   isOpen: boolean;
@@ -25,6 +26,8 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
   const [photoUrl, setPhotoUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -42,6 +45,18 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
       fetchUserProfile();
     }
   }, [isOpen]);
+
+  const handleFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const imageUrl = await uploadToCloudinary(file);
+    setPhotoUrl(imageUrl || "");
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -70,7 +85,14 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
               <Avatar>
                 <AvatarImage src={photoUrl} alt="User Photo" className="w-10 h-10" />
               </Avatar>
-              <Label>{username}</Label>
+              <Button onClick={handleFileInput}>Change Photo</Button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleUpload}
+                className="hidden"
+              />
             </div>
             <Label>Username</Label>
             <Input value={username} onChange={(e) => setUsername(e.target.value)} />
