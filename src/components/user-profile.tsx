@@ -32,7 +32,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
         try {
           const userProfile = await getUserInfo();
           setUsername(userProfile.name);
-          setPhotoUrl(userProfile.photo);
+          setPhotoUrl(userProfile.photo || "https://i.pinimg.com/474x/a8/da/22/a8da222be70a71e7858bf752065d5cc3.jpg");
         } catch (error) {
           console.error("Error fetching user profile:", error);
         } finally {
@@ -80,6 +80,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
         )}
         <DialogFooter>
           <Button onClick={handleSave} disabled={isSaving}>{isSaving ? "Saving..." : "Save"}</Button>
+          <Button variant="outline" onClick={onClose}>Close</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
