@@ -8,7 +8,7 @@ interface UserProps {
 const getUserInfo = async () => {
   try {
     
-    const response = await api.get("http://localhost:3000/users/currentUser");
+    const response = await api.get("http://localhost:3000/users");
     const { photo, name }: UserProps = response.data;
     return { photo, name };
   } catch (error) {
