@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { MoreHorizontal, SquarePen } from "lucide-react";
+import { MoreHorizontal, SquarePen, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -26,43 +27,65 @@ interface SidebarProps {
 }
 
 export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
-  return (
+  const [searchTerm, setSearchTerm] = useState("");
+  {/* filtered chats for conditional rendering */}
+  const filteredChats = chats.filter((chat) =>
+    chat.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (  
     <div
       data-collapsed={isCollapsed}
       className="relative group flex flex-col h-full bg-muted/10 dark:bg-muted/20 gap-4 p-2 data-[collapsed=true]:p-2 "
     >
       {!isCollapsed && (
-        <div className="flex justify-between p-2 items-center">
-          <div className="flex gap-2 items-center text-2xl">
-            <p className="font-medium">Chats</p>
-            <span>({chats.length})</span>
+        <div className="flex flex-col gap-2">
+          {/* chats search bar */}
+          <div className="relative w-full">
+            <Search
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+              size={18}
+            />
+            <input
+              type="text"
+              placeholder="Pesquisar chats..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 p-2 border rounded-md text-sm dark:bg-muted dark:text-white"
+            />
           </div>
+          <div className="flex justify-between p-2 items-center">
+            <div className="flex gap-2 items-center text-2xl">
+              <p className="font-medium">Chats</p>
+              <span>({filteredChats.length})</span>
+            </div>
 
-          <div>
-            <Link
-              href="#"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9",
-              )}
-            >
-              <MoreHorizontal size={20} />
-            </Link>
+            <div>
+              <Link
+                href="#"
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon" }),
+                  "h-9 w-9"
+                )}
+              >
+                <MoreHorizontal size={20} />
+              </Link>
 
-            <Link
-              href="#"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9",
-              )}
-            >
-              <SquarePen size={20} />
-            </Link>
+              <Link
+                href="#"
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon" }),
+                  "h-9 w-9"
+                )}
+              >
+                <SquarePen size={20} />
+              </Link>
+            </div>
           </div>
         </div>
       )}
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
-        {chats.map((chat, index) =>
+        {filteredChats.map((chat, index) =>
           isCollapsed ? (
             <TooltipProvider key={index}>
               <Tooltip key={index} delayDuration={0}>
@@ -73,7 +96,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
                       buttonVariants({ variant: chat.variant, size: "icon" }),
                       "h-11 w-11 md:h-16 md:w-16",
                       chat.variant === "secondary" &&
-                        "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white",
+                        "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
                     )}
                   >
                     <Avatar className="flex justify-center items-center">
@@ -104,7 +127,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
                 buttonVariants({ variant: chat.variant, size: "lg" }),
                 chat.variant === "secondary" &&
                   "dark:bg-muted  dark:hover:bg-muted dark:hover:text-white shrink",
-                "justify-start gap-4",
+                "justify-start gap-4"
               )}
             >
               <Avatar className="flex justify-center items-center">
@@ -129,7 +152,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
                 )}
               </div>
             </Link>
-          ),
+          )
         )}
       </nav>
     </div>
