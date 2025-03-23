@@ -17,6 +17,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
   const [username, setUsername] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -35,11 +36,15 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
     }
   }, [isOpen]);
 
-  const autoSave = async () => {
+  const handleSave = async () => {
+    setIsSaving(true);
     try {
       await editUserInfo({ name: username, photo: photoUrl });
+      onClose(); 
     } catch (error) {
       console.error('Error saving user profile:', error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -48,9 +53,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
       <DialogContent>
         <DialogHeader>
           <DialogTitle>User Profile</DialogTitle>
-          <DialogDescription>
-            Edit your profile information. Changes are saved automatically on blur.
-          </DialogDescription>
+          <DialogDescription>Edit your profile information and click save.</DialogDescription>
         </DialogHeader>
         {isLoading ? (
           <div>Loading...</div>
@@ -73,7 +76,6 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
               <Input
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                onBlur={autoSave}
               />
             </div>
             <div className="mb-4">
@@ -81,13 +83,14 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
               <Input
                 value={photoUrl}
                 onChange={(e) => setPhotoUrl(e.target.value)}
-                onBlur={autoSave}
               />
             </div>
           </>
         )}
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Close</Button>
+          <Button onClick={handleSave} disabled={isSaving}>
+            {isSaving ? "Saving..." : "Save"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

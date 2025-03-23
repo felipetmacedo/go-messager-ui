@@ -18,7 +18,7 @@ const getUserInfo = async () => {
 
 const editUserInfo = async (data: UserProps) => {
   try {
-    const response = await api.patch("/users/", data); 
+    const response = await api.patch("/users", data); 
     return response.data;
   } catch (error) {
     console.error('Error editing user info:', error);
