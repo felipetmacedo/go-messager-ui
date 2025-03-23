@@ -5,7 +5,6 @@ interface SignupProps {
     email: string;
     password: string;
     photo_url: string;
-    url_img: string;
 }
 
 interface LoginProps {
