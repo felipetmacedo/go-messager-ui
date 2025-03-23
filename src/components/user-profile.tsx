@@ -17,7 +17,7 @@ interface UserProfilePageProps {
     onClose: () => void;
 }
 
-const UserProfilePage = ({ onClose }) => {
+const UserProfilePage: React.FC<UserProfilePageProps> = ({ onClose }) => {
     const [username, setUsername] = useState('');
     const [photoUrl, setPhotoUrl] = useState('');
     const [isEditing, setIsEditing] = useState(false);
@@ -44,7 +44,7 @@ const UserProfilePage = ({ onClose }) => {
             await editUserInfo({ name: username, photo: photoUrl });
             setIsEditing(false);
         } catch (error) {
-            console.error('Error saving profile:', error);
+            console.error('Error saving user profile:', error);
         }
     };
 
@@ -53,61 +53,20 @@ const UserProfilePage = ({ onClose }) => {
     }
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <Card className="relative mx-auto max-w-sm">
-                <button
-                    onClick={onClose}
-                    className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-                >
-                    &times;
-                </button>
-                <CardHeader>
-                    <CardTitle className="text-2xl">User Profile</CardTitle>
-                    <CardDescription>
-                        View and edit your profile information
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid gap-4">
-                        <div className="grid gap-2">
-                            <Label htmlFor="photo">Photo</Label>
-                            {isEditing ? (
-                                <Input
-                                    id="photo"
-                                    type="text"
-                                    value={photoUrl}
-                                    onChange={(e) => setPhotoUrl(e.target.value)}
-                                    required
-                                />
-                            ) : (
-                                <img
-                                    src={photoUrl || 'https://via.placeholder.com/150'}
-                                    alt="User Photo"
-                                    className="w-36 h-36 rounded-full border-4 border-white mb-5"
-                                />
-                            )}
-                        </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="username">Username</Label>
-                            {isEditing ? (
-                                <Input
-                                    id="username"
-                                    type="text"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    required
-                                />
-                            ) : (
-                                <h2 className="text-4xl m-0">{username}</h2>
-                            )}
-                        </div>
-                        <Button onClick={() => setIsEditing(!isEditing)} className="w-full">
-                            {isEditing ? 'Save' : 'Edit'}
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
+        <Card>
+            <CardHeader>
+                <CardTitle>User Profile</CardTitle>
+                <CardDescription>Edit your profile information</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Label>Username</Label>
+                <Input value={username} onChange={(e) => setUsername(e.target.value)} />
+                <Label>Photo URL</Label>
+                <Input value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} />
+                <Button onClick={handleSave}>Save</Button>
+                <Button onClick={onClose}>Close</Button>
+            </CardContent>
+        </Card>
     );
 };
 
