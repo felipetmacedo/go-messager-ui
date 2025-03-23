@@ -30,11 +30,28 @@ interface SidebarProps {
 interface Chat {
   id: number;
   user_id: number;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    avatar: string;
+    created_at: string;
+    updated_at: string;
+  };
   receiver_id: number;
+  receiver: {
+    id: number;
+    name: string;
+    email: string;
+    avatar: string;
+    created_at: string;
+    updated_at: string;
+  };
   group_id?: number;
   avatar: string; // URL do avatar
   messages: {
-    id: number;
+    receiverId: number;
+    senderId: number;
     name: string;
     text: string;
     isLoading?: boolean;
