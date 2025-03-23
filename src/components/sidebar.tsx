@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Message } from "@/app/data";
+import { ListUserButton } from "./list-users";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -139,16 +140,15 @@ export function Sidebar({ isCollapsed, isMobile }: SidebarProps) {
                 <MoreHorizontal size={20} />
               </Link>
 
-              <Link
-                href="#"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon" }),
-                  "h-9 w-9"
-                )}
-              >
-                <SquarePen size={20} />
-              </Link>
-            </div>
+            <Link
+              href="#"
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "icon" }),
+                "h-9 w-9",
+              )}
+            >
+              <ListUserButton />
+            </Link>
           </div>
         </div>
       )}
