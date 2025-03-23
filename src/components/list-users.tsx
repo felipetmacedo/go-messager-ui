@@ -57,7 +57,7 @@ export function ListUserButton() {
 		}
 	};
 
-	const filteredContacts = contacts.filter((contact) =>
+	const filteredContacts = contacts?.filter((contact) =>
 		contact.name.toLowerCase().includes(searchQuery.toLowerCase())
 	);
 
