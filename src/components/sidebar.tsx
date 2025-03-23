@@ -32,31 +32,13 @@ interface Chat {
   user_id: number;
   receiver_id: number;
   group_id?: number;
-  name: string; // Nome do chat (usuário ou grupo)
   avatar: string; // URL do avatar
   messages: {
     id: number;
     name: string;
-    message: JSON;
+    text: string;
     isLoading?: boolean;
   }[];
-  created_at: string;
-  updated_at: string;
-}
-
-interface Group {
-  id: number;
-  name: string;
-  description?: string;
-  group_members: GroupMember[];
-  created_at: string;
-  updated_at: string;
-}
-
-interface GroupMember {
-  id: number;
-  group_id: number;
-  user_id: number;
   created_at: string;
   updated_at: string;
 }
@@ -75,29 +57,18 @@ export function Sidebar({ isCollapsed, isMobile }: SidebarProps) {
         // get all individual chats from the user logged in
         const { data: individualChats } = await api.get("/chats/user/1");
 
-        // // get all group chats from the user logged in
-        // const { data: groupChats } = await api.get("/groups/user/1");
-
         // map chats for expected format
         const mappedIndividualChats = individualChats.map((chat: any) => ({
           id: chat.id,
-          name: chat.receiver.name,
+          name: chat.user?.name || "Teste",
           avatar: chat.receiver.avatar || "",
           messages: chat.messages,
           variant: "secondary",
         }));
 
         console.log("INDIVIDUAL CHATS", individualChats);
+        console.log("MAPPED CHATS", mappedIndividualChats);
 
-        // const mappedGroupChats = groupChats.map((group: any) => ({
-        //   id: group.id,
-        //   name: group.name,
-        //   avatar: "",
-        //   messages: [], // messages can be loaded later
-        //   variant: "secondary",
-        // }));
-
-        // combine individual and group chats
         setChats([...mappedIndividualChats]);
       } catch (error) {
         console.error("Erro ao buscar os chats:", error);
@@ -223,11 +194,10 @@ export function Sidebar({ isCollapsed, isMobile }: SidebarProps) {
                 <span>{chat.name}</span>
                 {chat.messages.length > 0 && (
                   <span className="text-xs truncate ">
-                    {chat.messages[chat.messages.length - 1].name.split(" ")[0]}
-                    :{" "}
-                    {chat.messages[chat.messages.length - 1].isLoading
+                    {chat.messages[chat.messages.length - 1]?.isLoading
                       ? "Typing..."
-                      : chat.messages[chat.messages.length - 1].message}
+                      : chat.messages[chat.messages.length - 1]?.text ||
+                        "Desconhecido"}
                   </span>
                 )}
               </div>
