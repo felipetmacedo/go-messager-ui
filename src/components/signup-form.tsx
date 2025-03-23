@@ -72,17 +72,16 @@ export function SignupForm() {
     }
   };
 
-
   return (
-    <Card className=" max-w-lg w-full p-6">
-      <CardHeader>
-        <CardTitle className="text-2xl">Sign Up</CardTitle>
-        <CardDescription>Create an account to join our community</CardDescription>
+    <Card id="signup-card" className=" max-w-lg w-full p-6">
+      <CardHeader id="signup-header">
+        <CardTitle id="signup-title" className="text-2xl">Sign Up</CardTitle>
+        <CardDescription id="signup-description">Create an account to join our community</CardDescription>
       </CardHeader>
-      <CardContent>
-        <form className="grid gap-4" onSubmit={handleSubmit}>
-          <div className="grid gap-2">
-            <Label htmlFor="profile_picture">Profile Picture</Label>
+      <CardContent id="signup-content">
+        <form id="signup-form" className="grid gap-4" onSubmit={handleSubmit}>
+          <div id="signup-fields" className="grid gap-2">
+            <Label id="profile-picture-label" htmlFor="profile_picture">Profile Picture</Label>
             <Input
               ref={fileInputRef}
               id="profile_picture"
@@ -90,9 +89,9 @@ export function SignupForm() {
               accept="image/*"
               onChange={handleUpload}
               className="cursor-pointer hidden" />
-            {profilePicture && <Image src={profilePicture} width={90} height={0} alt="Profile Picture" onClick={handleFileInput} className="rounded-full mx-auto border-2 border-primary cursor-pointer hover:opacity-60" />}
-            <div className="grid gap-2">
-              <Label htmlFor="name">Name *</Label>
+            {profilePicture && <Image id="profile-picture" src={profilePicture} width={90} height={0} alt="Profile Picture" onClick={handleFileInput} className="rounded-full mx-auto border-2 border-primary cursor-pointer hover:opacity-60" />}
+            <div id="name-field" className="grid gap-2">
+              <Label id="name-label" htmlFor="name">Name *</Label>
               <Input
                 id="name"
                 type="text"
@@ -101,8 +100,8 @@ export function SignupForm() {
                 onChange={(e) => setName(e.target.value)}
                 required />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email *</Label>
+            <div id="email-field" className="grid gap-2">
+              <Label id="email-label" htmlFor="email">Email *</Label>
               <Input
                 id="email"
                 type="email"
@@ -112,8 +111,8 @@ export function SignupForm() {
                 required
               />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password *</Label>
+            <div id="password-field" className="grid gap-2">
+              <Label id="password-label" htmlFor="password">Password *</Label>
               <Input
                 id="password"
                 type="password"
@@ -122,8 +121,8 @@ export function SignupForm() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className="grid gap-2 mb-4">
-              <Label htmlFor="confirm_password">Confirm Password *</Label>
+            <div id="confirm-password-field" className="grid gap-2 mb-4">
+              <Label id="confirm-password-label" htmlFor="confirm_password">Confirm Password *</Label>
               <Input
                 id="confirm_password"
                 type="password"
@@ -133,16 +132,18 @@ export function SignupForm() {
                 className={!passwordsMatch ? "border-red-500" : ""}
               />
               {!passwordsMatch && (
-                <p className="text-red-500 text-sm">Passwords do not match</p>
+                <p id="password-mismatch-error" className="text-red-500 text-sm">Passwords do not match</p>
               )}
             </div>
             <Button
+              id="signup-button"
               type="submit"
               className="w-full "
               disabled={!passwordsMatch || !name || !email || !password || !confirmPassword}
             >
               {loading ? (
                 <svg
+                  id="loading-spinner"
                   className="animate-spin h-5 w-5 text-white mx-auto"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -168,7 +169,7 @@ export function SignupForm() {
             </Button>
           </div>
         </form>
-        <div className="mt-4 text-center text-sm">
+        <div id="signin-link" className="mt-4 text-center text-sm">
           Already have an account?{" "}
           <Link href="/signin" className="underline">
             Log in
