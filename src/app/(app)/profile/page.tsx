@@ -2,6 +2,8 @@ import { cookies } from "next/headers";
 import { ChatLayout } from "@/components/chat/chat-layout";
 import UserProfileModal from "@/components/user-profile"; 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+
 
 export default function Home() {
   const layout = cookies().get("react-resizable-panels:layout");
