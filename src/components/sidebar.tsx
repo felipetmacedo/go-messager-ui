@@ -73,7 +73,7 @@ export function Sidebar({ isCollapsed, isMobile }: SidebarProps) {
         setLoading(true);
 
         // get all individual chats from the user logged in
-        const { data: individualChats } = await api.get("/chats/user/1");
+        const { data: individualChats } = await api.get("/chats/user");
 
         // map chats for expected format
         const mappedIndividualChats = individualChats.map((chat: any) => ({
@@ -150,6 +150,7 @@ export function Sidebar({ isCollapsed, isMobile }: SidebarProps) {
               <ListUserButton />
             </Link>
           </div>
+        </div>
         </div>
       )}
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
