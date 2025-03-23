@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Message } from "@/app/data";
+import { ListUserButton } from "./list-users";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -56,7 +57,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
                 "h-9 w-9",
               )}
             >
-              <SquarePen size={20} />
+              <ListUserButton />
             </Link>
           </div>
         </div>
