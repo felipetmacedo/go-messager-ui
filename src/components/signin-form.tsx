@@ -30,7 +30,7 @@ export function SigninForm() {
     try {
       setWarning(null);
       await login({ email, password });
-      router.push("/dashboard");
+      router.push("/chats");
     } catch (error) {
       setWarning('Invalid email or password');
       console.error('Error logging in:', error);
