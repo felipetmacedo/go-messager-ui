@@ -147,14 +147,15 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
         </nav>
         <div
           className={cn(
-            "flex items-center py-2",
+            "flex items-center py-2 cursor-pointer",
             isCollapsed ? "justify-center" : "justify-start px-10"
           )}
+          onClick={() => setIsProfileOpen(true)}
         >
           <Avatar className="flex justify-center items-center">
             <AvatarImage
               src={
-          "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg"
+                "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg"
               }
               alt={"teste"}
               width={6}
@@ -165,6 +166,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
           {!isCollapsed && <span className="ml-4">User Name</span>}
         </div>
       </div>
+      <UserProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
     </div>
   );
 }
