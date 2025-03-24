@@ -233,6 +233,7 @@ export const Users: User[] = [
     timestamp?: string;
     role?: string;
     isLiked?: boolean;
+    isSender?: boolean;
   }
   
   export interface User {

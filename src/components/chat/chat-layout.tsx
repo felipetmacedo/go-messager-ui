@@ -78,8 +78,8 @@ export function ChatLayout({
         const mappedIndividualChats = individualChats.map((chat: any) => ({
           id: chat.id,
           user_id: chat.user_id,
-          name: chat.receiver?.name || chat.user.name,
-          avatar: chat.receiver.avatar || chat.user.avatar,
+          name: chat.user_id === chat.user.id ? chat.receiver.name : chat.user.name,
+          avatar: chat.user_id === chat.user.id ? chat.receiver.avatar : chat.user.avatar,
           messages: chat.messages,
           variant: 'secondary',
           user: chat.user,
@@ -162,11 +162,13 @@ export function ChatLayout({
           <Chat
             messages={selectedChat.messages}
             selectedUser={{
-              name: selectedChat.name,
-              avatar: selectedChat.avatar,
+              name: selectedChat.user.name,
+              avatar: selectedChat.user.avatar,
               messages: selectedChat.messages,
             }}
             isMobile={isMobile}
+            currentUserId={selectedChat.user_id}
+            receiver={selectedChat.receiver}
           />
         ) : (
           <div className="flex justify-center items-center h-full">

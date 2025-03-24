@@ -11,6 +11,7 @@ interface ChatProps {
     name: string;
     text: string;
     isLoading?: boolean;
+    time?: string;
   }[];
   selectedUser: {
     name: string;
@@ -21,12 +22,19 @@ interface ChatProps {
       name: string;
       text: string;
       isLoading?: boolean;
+      time?: string;
     }[];
   };
   isMobile: boolean;
+  currentUserId: number;
+  receiver: {
+    id: number;
+    name: string;
+    avatar: string;
+  };
 }
 
-export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
+export function Chat({ messages, selectedUser, isMobile, currentUserId, receiver }: ChatProps) {
   const messagesState = useChatStore((state) => state.messages);
 
   const sendMessage = (newMessage: Message) => {
@@ -37,17 +45,18 @@ export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
 
   const convertedMessages = messages.map(msg => ({
     id: msg.senderId,
-    avatar: selectedUser.avatar,
-    name: msg.name,
+    avatar: msg.senderId === currentUserId ? selectedUser.avatar : receiver.avatar,
+    name: msg.senderId === currentUserId ? "You" : receiver.name,
     message: msg.text,
     isLoading: msg.isLoading,
-    timestamp: new Date().toLocaleTimeString()
+    timestamp: new Date(msg.time || new Date()).toLocaleTimeString(),
+    isSender: msg.senderId === currentUserId
   }));
 
   const convertedUser: UserData = {
-    id: 1,
-    name: selectedUser.name,
-    avatar: selectedUser.avatar,
+    id: receiver.id,
+    name: receiver.name,
+    avatar: receiver.avatar,
     messages: convertedMessages
   };
 
@@ -60,6 +69,7 @@ export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
         selectedUser={convertedUser}
         sendMessage={sendMessage}
         isMobile={isMobile}
+        currentUserId={currentUserId}
       />
 
       <ChatBottombar isMobile={isMobile} />

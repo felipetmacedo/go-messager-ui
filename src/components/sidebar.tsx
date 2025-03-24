@@ -69,6 +69,20 @@ export function Sidebar({ isCollapsed, chats, selectedChat, onChatSelect, isMobi
 		chat.name.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
+	const mappedIndividualChats = filteredChats.map((chat: any) => ({
+		id: chat.id,
+		user_id: chat.user_id,
+		name: chat.user_id === chat.user.id ? chat.receiver.name : chat.user.name,
+		avatar: chat.user_id === chat.user.id ? chat.receiver.avatar : chat.user.avatar,
+		messages: chat.messages,
+		variant: 'secondary',
+		user: chat.user,
+		receiver_id: chat.receiver_id,
+		receiver: chat.receiver,
+		created_at: chat.created_at,
+		updated_at: chat.updated_at,
+	}));
+
 	return (
 		<div
 			data-collapsed={isCollapsed}
