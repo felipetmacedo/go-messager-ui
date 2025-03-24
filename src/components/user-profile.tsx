@@ -89,7 +89,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose, se
         ) : (
           <>
             <div className="flex items-center gap-4 mb-4">
-              {photoUrl && <Image src={photoUrl} width={90} height={0} alt="Profile Picture" onClick={handleFileInput} className="rounded-full mx-auto border-2 border-primary cursor-pointer hover:opacity-60" />}
+              {photoUrl && <Image src={photoUrl} width={90} height={90} alt="Profile Picture" onClick={handleFileInput} className="rounded-full mx-auto border-2 border-primary cursor-pointer hover:opacity-60" />}
               <input
                 ref={fileInputRef}
                 type="file"

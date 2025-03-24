@@ -11,7 +11,6 @@ import {
 
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
 
-
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { Forward, Heart } from "lucide-react";
 
@@ -20,14 +19,15 @@ interface ChatListProps {
   selectedUser: UserData;
   sendMessage: (newMessage: Message) => void;
   isMobile: boolean;
+  currentUserId: number;
 }
 
-const getMessageVariant = (messageName: string, selectedUserName: string) =>
-  messageName !== selectedUserName ? "sent" : "received";
+const getMessageVariant = (isSender: boolean) => isSender ? "sent" : "received";
 
 export function ChatList({
   messages,
   selectedUser,
+  currentUserId,
 }: ChatListProps) {
   const actionIcons = [
     { icon: DotsVerticalIcon, type: "More" },
@@ -40,7 +40,7 @@ export function ChatList({
       <ChatMessageList>
         <AnimatePresence>
           {messages.map((message, index) => {
-            const variant = getMessageVariant(message.name, selectedUser.name);
+            const variant = getMessageVariant(message.isSender ?? false);
             return (
               <motion.div
                 key={index}
@@ -59,7 +59,6 @@ export function ChatList({
                 style={{ originX: 0.5, originY: 0.5 }}
                 className="flex flex-col gap-2 p-4"
               >
-                {/* Usage of ChatBubble component */}
                 <ChatBubble variant={variant}>
                   <ChatBubbleAvatar src={message.avatar} />
                   <ChatBubbleMessage isLoading={message.isLoading}>

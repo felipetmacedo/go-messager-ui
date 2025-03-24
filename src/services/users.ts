@@ -7,7 +7,7 @@ interface ResetPasswordProps {
 
 const listUsers = async () => {
   try {
-    const response = await api.get("/users");
+    const response = await api.get("/users/all");
     return response.data;
   } catch (error) {
     throw error;
