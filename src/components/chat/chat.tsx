@@ -51,7 +51,7 @@ export function Chat({ messages, selectedUser, isMobile, currentUserId, receiver
       name: msg.senderId === currentUserId ? "You" : receiver.name,
       message: msg.text,
       isLoading: msg.isLoading,
-      timestamp: new Date(msg.time || new Date()).toLocaleTimeString(),
+      timestamp: new Date(msg.time || new Date()).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
       isSender: msg.senderId === currentUserId
     }));
     setMessages(() => convertedMessages);

@@ -16,7 +16,7 @@ export const useChatSocket = (receiverId: number) => {
       console.error("Token não encontrado no localStorage.");
       return;
     }
-    const wsUrl = `process.env.WS_URL/chats?token=${token}`;
+    const wsUrl = `ws://127.0.0.1:3000/chats?token=${token}`;
     const socket = new WebSocket(wsUrl);
     socketRef.current = socket;
 

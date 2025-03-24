@@ -93,80 +93,6 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
 
   return (
     <div className="px-2 py-4 flex justify-between w-full items-center gap-2">
-      <div className="flex">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Link
-              href="#"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9",
-                "shrink-0",
-              )}
-            >
-              <PlusCircle size={22} className="text-muted-foreground" />
-            </Link>
-          </PopoverTrigger>
-          <PopoverContent side="top" className="w-full p-2">
-            {message.trim() || isMobile ? (
-              <div className="flex gap-2">
-                <Link
-                  href="#"
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "icon" }),
-                    "h-9 w-9",
-                    "shrink-0",
-                  )}
-                >
-                  <Mic size={22} className="text-muted-foreground" />
-                </Link>
-                {BottombarIcons.map((icon, index) => (
-                  <Link
-                    key={index}
-                    href="#"
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "h-9 w-9",
-                      "shrink-0",
-                    )}
-                  >
-                    <icon.icon size={22} className="text-muted-foreground" />
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <Link
-                href="#"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon" }),
-                  "h-9 w-9",
-                  "shrink-0",
-                )}
-              >
-                <Mic size={22} className="text-muted-foreground" />
-              </Link>
-            )}
-          </PopoverContent>
-        </Popover>
-        {!message.trim() && !isMobile && (
-          <div className="flex">
-            {BottombarIcons.map((icon, index) => (
-              <Link
-                key={index}
-                href="#"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon" }),
-                  "h-9 w-9",
-                  "shrink-0",
-                )}
-              >
-                <icon.icon size={22} className="text-muted-foreground" />
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-
       <AnimatePresence initial={false}>
         <motion.div
           key="input"
@@ -188,32 +114,10 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
             ref={inputRef}
             onKeyDown={handleKeyPress}
             onChange={handleInputChange}
-            placeholder="Type a message..."
+            placeholder="Escreva uma mensagem..."
             className="rounded-md max-h-2"
           />
         </motion.div>
-
-        {message.trim() ? (
-          <Button
-            className="h-9 w-9 shrink-0"
-            onClick={handleSend}
-            disabled={isLoading}
-            variant="ghost"
-            size="icon"
-          >
-            <SendHorizontal size={22} className="text-muted-foreground" />
-          </Button>
-        ) : (
-          <Button
-            className="h-9 w-9 shrink-0"
-            onClick={handleThumbsUp}
-            disabled={isLoading}
-            variant="ghost"
-            size="icon"
-          >
-            <ThumbsUp size={22} className="text-muted-foreground" />
-          </Button>
-        )}
       </AnimatePresence>
     </div>
   );

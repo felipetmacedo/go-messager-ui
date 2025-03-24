@@ -60,7 +60,7 @@ export function ChatList({
                 className="flex flex-col gap-2 p-4"
               >
                 <ChatBubble variant={variant}>
-                  <ChatBubbleAvatar src={message.avatar} />
+                  {!message.isSender && <ChatBubbleAvatar src={message.avatar} />}
                   <ChatBubbleMessage isLoading={message.isLoading}>
                     {message.message}
                     {message.timestamp && (
