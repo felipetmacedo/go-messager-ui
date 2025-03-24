@@ -1,8 +1,6 @@
-"use client";
+'use client'
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { MoreHorizontal, SquarePen, Search } from 'lucide-react';
 import { GolangIcon, ProfileIcon } from '@/assets';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
