@@ -25,13 +25,44 @@ export interface Contact {
 	avatar: string;
 }
 
-export function ListUserButton() {
+interface ListUserButtonProps {
+	onNewChat: (chat: {
+		id: number;
+		user_id: number;
+		name: string;
+		variant: 'secondary' | 'ghost';
+		user: {
+			id: number;
+			name: string;
+			email: string;
+			avatar: string;
+			created_at: string;
+			updated_at: string;
+		};
+		receiver_id: number;
+		receiver: {
+			id: number;
+			name: string;
+			email: string;
+			avatar: string;
+			created_at: string;
+			updated_at: string;
+		};
+		avatar: string;
+		messages: any[];
+		created_at: string;
+		updated_at: string;
+	}) => void;
+}
+
+export function ListUserButton({ onNewChat }: ListUserButtonProps) {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [selectedContact, setSelectedContact] = useState<Contact | null>(
 		null
 	);
 	const [contacts, setContacts] = useState<Contact[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isOpen, setIsOpen] = useState(false);
 
 	async function fetchContacts() {
 		try {
@@ -57,12 +88,47 @@ export function ListUserButton() {
 		}
 	};
 
+	const handleStartChat = () => {
+		if (selectedContact) {
+			const newChat = {
+				id: Date.now(), // Temporary ID
+				user_id: 1, // Current user ID (you might want to get this from your auth context)
+				name: selectedContact.name,
+				variant: 'secondary' as const,
+				user: {
+					id: 1,
+					name: 'Current User', // Replace with actual current user name
+					email: 'current@user.com', // Replace with actual current user email
+					avatar: '', // Replace with actual current user avatar
+					created_at: new Date().toISOString(),
+					updated_at: new Date().toISOString(),
+				},
+				receiver_id: parseInt(selectedContact.id),
+				receiver: {
+					id: parseInt(selectedContact.id),
+					name: selectedContact.name,
+					email: selectedContact.email,
+					avatar: selectedContact.avatar,
+					created_at: new Date().toISOString(),
+					updated_at: new Date().toISOString(),
+				},
+				avatar: selectedContact.avatar,
+				messages: [],
+				created_at: new Date().toISOString(),
+				updated_at: new Date().toISOString(),
+			};
+			onNewChat(newChat);
+			setIsOpen(false);
+			setSelectedContact(null);
+		}
+	};
+
 	const filteredContacts = contacts?.filter((contact) =>
 		contact.name.toLowerCase().includes(searchQuery.toLowerCase())
 	);
 
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger asChild>
 				<Button variant="outline" size="icon">
 					<SquarePen className="h-5 w-5" />
@@ -138,7 +204,7 @@ export function ListUserButton() {
 				</div>
 
 				<DialogFooter>
-					<Button type="submit" disabled={!selectedContact}>
+					<Button type="submit" disabled={!selectedContact} onClick={handleStartChat}>
 						Conversar
 					</Button>
 				</DialogFooter>
