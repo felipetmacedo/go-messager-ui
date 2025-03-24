@@ -10,18 +10,15 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@/components/ui/tooltip";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Message } from "@/app/data";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserProfileModal from "@/components/user-profile";
+import { ProfileIcon } from "@/assets";
+import { StaticImageData } from "next/image";
+import { getUserInfo } from "@/services/user";
+import Image from "next/image";
+import { profile } from "console";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -35,8 +32,28 @@ interface SidebarProps {
   isMobile: boolean;
 }
 
+interface DataProps{
+  name: string;
+  avatar: string | StaticImageData;
+}
+
 export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [data, setData] = useState<DataProps>();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const userProfile = await getUserInfo();
+        console.log(userProfile);
+        setData(userProfile);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+    fetchUserProfile();
+  }, [update]);
 
   return (
     <div
@@ -143,7 +160,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
                 </div>
               </Link>
             ),
-          )}  
+          )}
         </nav>
         <div
           className={cn(
@@ -152,21 +169,18 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
           )}
           onClick={() => setIsProfileOpen(true)}
         >
-          <Avatar className="flex justify-center items-center">
-            <AvatarImage
-              src={
-                "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg"
-              }
-              alt={"teste"}
-              width={6}
-              height={6}
-              className="w-10 h-10 "
-            />
-          </Avatar>
-          {!isCollapsed && <span className="ml-4">User Name</span>}
+
+          <Image 
+            src={data?.avatar || ProfileIcon}
+            alt={"teste"}
+            width={90}
+            height={20}
+            className="w-10 h-10 "
+          />
+          {!isCollapsed && <span className="ml-4 font-bold">{data?.name}</span>}
         </div>
       </div>
-      <UserProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
+      <UserProfileModal isOpen={isProfileOpen} setUpdate={setUpdate} onClose={() => setIsProfileOpen(false)} />
     </div>
   );
 }

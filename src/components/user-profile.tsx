@@ -12,18 +12,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getUserInfo, editUserInfo } from "@/services/user";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { uploadToCloudinary } from "@/utils/cloudinaryService";
+import Image, { StaticImageData } from "next/image";
+import { ProfileIcon } from "@/assets";
+
 
 interface UserProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
+  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) => {
+
+const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose, setUpdate }) => {
   const [username, setUsername] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("");
+  const [photoUrl, setPhotoUrl] = useState<string | StaticImageData>(ProfileIcon);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -35,7 +39,9 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
         try {
           const userProfile = await getUserInfo();
           setUsername(userProfile.name);
-          setPhotoUrl(userProfile.photo || "https://i.pinimg.com/474x/a8/da/22/a8da222be70a71e7858bf752065d5cc3.jpg");
+          if (userProfile.avatar){
+            setPhotoUrl(userProfile.avatar);
+          }
         } catch (error) {
           console.error("Error fetching user profile:", error);
         } finally {
@@ -62,6 +68,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
     setIsSaving(true);
     try {
       await editUserInfo({ name: username, photo: photoUrl });
+      setUpdate((prev) => !prev);
       onClose();
     } catch (error) {
       console.error("Error saving user profile:", error);
@@ -82,10 +89,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
         ) : (
           <>
             <div className="flex items-center gap-4 mb-4">
-              <Avatar>
-                <AvatarImage src={photoUrl} alt="User Photo" className="w-10 h-10" />
-              </Avatar>
-              <Button onClick={handleFileInput}>Change Photo</Button>
+              {photoUrl && <Image src={photoUrl} width={90} height={0} alt="Profile Picture" onClick={handleFileInput} className="rounded-full mx-auto border-2 border-primary cursor-pointer hover:opacity-60" />}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -96,13 +100,10 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
             </div>
             <Label>Username</Label>
             <Input value={username} onChange={(e) => setUsername(e.target.value)} />
-            <Label>Photo URL</Label>
-            <Input value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} />
           </>
         )}
         <DialogFooter>
           <Button onClick={handleSave} disabled={isSaving}>{isSaving ? "Saving..." : "Save"}</Button>
-          <Button variant="outline" onClick={onClose}>Close</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

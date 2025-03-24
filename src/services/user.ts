@@ -1,16 +1,22 @@
+import { StaticImageData } from "next/image";
 import api from "./api";
 
-interface UserProps {
-    photo: string;
+interface UserPropsGet {
+    avatar: string | StaticImageData;
     name: string;
 }
 
+interface UserProps {
+    name: string;
+    photo: string | StaticImageData;
+}
+
+
 const getUserInfo = async () => {
   try {
-    
-    const response = await api.get("http://localhost:3000/users/currentUser");
-    const { photo, name }: UserProps = response.data;
-    return { photo, name };
+    const response = await api.get("/users");
+    const { avatar, name }: UserPropsGet = response.data;
+    return { avatar, name };
   } catch (error) {
     throw error;
   }
