@@ -17,13 +17,11 @@ import { uploadToCloudinary } from "@/utils/cloudinaryService";
 import Image, { StaticImageData } from "next/image";
 import { ProfileIcon } from "@/assets";
 
-
 interface UserProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
   setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
 
 const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose, setUpdate }) => {
   const [username, setUsername] = useState("");
@@ -79,7 +77,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose, se
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+       <DialogContent id="UserProfileModal">
         <DialogHeader>
           <DialogTitle>User Profile</DialogTitle>
           <DialogDescription>Edit your profile information and click save.</DialogDescription>
@@ -89,7 +87,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose, se
         ) : (
           <>
             <div className="flex items-center gap-4 mb-4">
-              {photoUrl && <Image src={photoUrl} width={90} height={90} alt="Profile Picture" onClick={handleFileInput} className="rounded-full mx-auto border-2 border-primary cursor-pointer hover:opacity-60" />}
+              {photoUrl && <Image id="ProfilePicture" src={photoUrl} width={90} height={90} alt="Profile Picture" onClick={handleFileInput} className="rounded-full mx-auto border-2 border-primary cursor-pointer hover:opacity-60" />}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -99,11 +97,12 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose, se
               />
             </div>
             <Label>Username</Label>
-            <Input value={username} onChange={(e) => setUsername(e.target.value)} />
+            <Input id="UsernameInput" value={username} onChange={(e) => setUsername(e.target.value)} />
           </>
         )}
         <DialogFooter>
-          <Button onClick={handleSave} disabled={isSaving}>{isSaving ? "Saving..." : "Save"}</Button>
+          <Button id="CancelButton" onClick={onClose} disabled={isSaving}>Cancel</Button>
+          <Button id="SaveButton" onClick={handleSave} disabled={isSaving}>{isSaving ? "Saving..." : "Save"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

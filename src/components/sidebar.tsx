@@ -277,6 +277,7 @@ export function Sidebar({
 			{/* User Profile Card */}
 			<div className="mt-auto border-t pt-2">
 				<button
+				 	id="user-profile-button"
 					onClick={() => setIsProfileOpen(true)}
 					className={cn(
 						"w-full flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors",
