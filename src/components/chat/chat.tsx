@@ -5,8 +5,24 @@ import useChatStore from "../../hooks/use-chat-store";
 import ChatBottombar from "./chat-bottombar";
 
 interface ChatProps {
-  messages?: Message[];
-  selectedUser: UserData;
+  messages: {
+    receiverId: number;
+    senderId: number;
+    name: string;
+    text: string;
+    isLoading?: boolean;
+  }[];
+  selectedUser: {
+    name: string;
+    avatar: string;
+    messages: {
+      receiverId: number;
+      senderId: number;
+      name: string;
+      text: string;
+      isLoading?: boolean;
+    }[];
+  };
   isMobile: boolean;
 }
 
@@ -19,13 +35,29 @@ export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
     }));
   };
 
+  const convertedMessages = messages.map(msg => ({
+    id: msg.senderId,
+    avatar: selectedUser.avatar,
+    name: msg.name,
+    message: msg.text,
+    isLoading: msg.isLoading,
+    timestamp: new Date().toLocaleTimeString()
+  }));
+
+  const convertedUser: UserData = {
+    id: 1,
+    name: selectedUser.name,
+    avatar: selectedUser.avatar,
+    messages: convertedMessages
+  };
+
   return (
     <div className="flex flex-col justify-between w-full h-full">
-      <ChatTopbar selectedUser={selectedUser} />
+      <ChatTopbar selectedUser={convertedUser} />
 
       <ChatList
-        messages={messagesState}
-        selectedUser={selectedUser}
+        messages={convertedMessages}
+        selectedUser={convertedUser}
         sendMessage={sendMessage}
         isMobile={isMobile}
       />
