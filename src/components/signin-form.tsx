@@ -64,7 +64,7 @@ export function SigninForm() {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
-                <Link href="/forgot-password" className="ml-auto inline-block text-sm underline">
+                <Link id="forgot-password" href="/forgot-password" className="ml-auto inline-block text-sm underline">
                   Forgot your password?
                 </Link>
               </div>
@@ -76,7 +76,7 @@ export function SigninForm() {
                 required 
               />
             </div>
-            <Button type="submit" className="w-full">
+            <Button id="Login" type="submit" className="w-full">
             {isLoading ? (
                 <svg
                   className="animate-spin h-5 w-5 text-white mx-auto"
@@ -103,11 +103,11 @@ export function SigninForm() {
               )}
             </Button>
           </div>
-          {warning && <p className="text-red-500 mt-2 text-sm">{warning}</p>}
+          {warning && <p id="warning" className="text-red-500 mt-2 text-sm">{warning}</p>}
         </form>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="underline">
+          <Link id="signup" href="/signup" className="underline">
             Sign up
           </Link>
         </div>
