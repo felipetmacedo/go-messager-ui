@@ -11,6 +11,41 @@ import {
     name: string;
     url: string;
   }
+
+  interface Chat {
+    id: number;
+    user_id: number;
+    name: string;
+    variant: 'secondary' | 'ghost';
+    user: {
+      id: number;
+      name: string;
+      email: string;
+      avatar: string;
+      created_at: string;
+      updated_at: string;
+    };
+    receiver_id: number;
+    receiver: {
+      id: number;
+      name: string;
+      email: string;
+      avatar: string;
+      created_at: string;
+      updated_at: string;
+    };
+    group_id?: number;
+    avatar: string;
+    messages: {
+      receiverId: number;
+      senderId: number;
+      name: string;
+      text: string;
+      isLoading?: boolean;
+    }[];
+    created_at: string;
+    updated_at: string;
+  }
   
   interface State {
     selectedExample: Example;
@@ -20,6 +55,8 @@ import {
     messages: Message[];
     hasInitialAIResponse: boolean;
     hasInitialResponse: boolean;
+    selectedChat: Chat | null;
+    unreadMessages: Record<number, number>; // chatId -> number of unread messages
   }
   
   interface Actions {
@@ -36,6 +73,9 @@ import {
     setMessages: (fn: (messages: Message[]) => Message[]) => void;
     setHasInitialAIResponse: (hasInitialAIResponse: boolean) => void;
     setHasInitialResponse: (hasInitialResponse: boolean) => void;
+    setSelectedChat: (chat: Chat | null) => void;
+    addUnreadMessage: (chatId: number) => void;
+    clearUnreadMessages: (chatId: number) => void;
   }
   
   const useChatStore = create<State & Actions>()((set) => ({
@@ -75,6 +115,24 @@ import {
   
     hasInitialResponse: false,
     setHasInitialResponse: (hasInitialResponse) => set({ hasInitialResponse }),
+
+    selectedChat: null,
+    setSelectedChat: (chat) => set({ selectedChat: chat }),
+
+    unreadMessages: {},
+    addUnreadMessage: (chatId) => 
+      set((state) => ({ 
+        unreadMessages: {
+          ...state.unreadMessages,
+          [chatId]: (state.unreadMessages[chatId] || 0) + 1
+        }
+      })),
+    clearUnreadMessages: (chatId) =>
+      set((state) => {
+        const newUnreadMessages = { ...state.unreadMessages };
+        delete newUnreadMessages[chatId];
+        return { unreadMessages: newUnreadMessages };
+      }),
   }));
   
   export default useChatStore;
