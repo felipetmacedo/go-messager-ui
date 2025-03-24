@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -22,47 +22,47 @@ import { getUserInfo } from '@/services/user';
 import UserProfileModal from './user-profile';
 
 interface Chat {
-	id: number;
-	user_id: number;
-	name: string;
-	variant: 'secondary' | 'ghost';
-	user: {
-		id: number;
-		name: string;
-		email: string;
-		avatar: string;
-		created_at: string;
-		updated_at: string;
-	};
-	receiver_id: number;
-	receiver: {
-		id: number;
-		name: string;
-		email: string;
-		avatar: string;
-		created_at: string;
-		updated_at: string;
-	};
-	group_id?: number;
-	avatar: string;
-	messages: {
-		receiverId: number;
-		senderId: number;
-		name: string;
-		text: string;
-		isLoading?: boolean;
-	}[];
-	created_at: string;
-	updated_at: string;
+  id: number;
+  user_id: number;
+  name: string;
+  variant: "secondary" | "ghost";
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    avatar: string;
+    created_at: string;
+    updated_at: string;
+  };
+  receiver_id: number;
+  receiver: {
+    id: number;
+    name: string;
+    email: string;
+    avatar: string;
+    created_at: string;
+    updated_at: string;
+  };
+  group_id?: number;
+  avatar: string;
+  messages: {
+    receiverId: number;
+    senderId: number;
+    name: string;
+    text: string;
+    isLoading?: boolean;
+  }[];
+  created_at: string;
+  updated_at: string;
 }
 
 interface SidebarProps {
-	isCollapsed: boolean;
-	chats: Chat[];
-	selectedChat: Chat | null;
-	onChatSelect: (chat: Chat) => void;
-	isMobile: boolean;
-	onNewChat: (chat: Chat) => void;
+  isCollapsed: boolean;
+  chats: Chat[];
+  selectedChat: Chat | null;
+  onChatSelect: (chat: Chat) => void;
+  isMobile: boolean;
+  onNewChat: (chat: Chat) => void;
 }
 
 export function Sidebar({
@@ -90,10 +90,10 @@ export function Sidebar({
 		fetchUserProfile();
 	}, [update]);
 
-	// filter chats by search term
-	const filteredChats = chats.filter((chat) =>
-		chat.name.toLowerCase().includes(searchTerm.toLowerCase())
-	);
+  // filter chats by search term
+  const filteredChats = chats.filter((chat) =>
+    chat.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
 	const mappedIndividualChats = filteredChats.map((chat: any) => ({
 		id: chat.id,
