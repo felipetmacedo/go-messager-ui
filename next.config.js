@@ -10,7 +10,9 @@ const nextConfig = {
             destination: "http://127.0.0.1:3000/:path*", // Redireciona para o backend
           },
         ];
-      },
-
+    },
+    env: {
+        WS_URL: process.env.WS_URL || 'ws://127.0.0.1:3000',
+    },
 };
 module.exports = nextConfig

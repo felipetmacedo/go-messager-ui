@@ -15,6 +15,7 @@ import { Message, loggedInUserData } from "@/app/data";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { ChatInput } from "@/components/ui/chat/chat-input";
 import useChatStore from "@/hooks/use-chat-store";
+import { useChatSocket } from "@/hooks/use-chat-socket";
 
 interface ChatBottombarProps {
   isMobile: boolean;
@@ -31,37 +32,39 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
     (state) => state.setHasInitialResponse,
   );
   const [isLoading, setisLoading] = useState(false);
+  const selectedChat = useChatStore((state) => state.selectedChat);
+  const { sendMessage: sendWebSocketMessage } = useChatSocket(selectedChat?.receiver_id || 0);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(event.target.value);
   };
 
-  const sendMessage = (newMessage: Message) => {
-    useChatStore.setState((state) => ({
-      messages: [...state.messages, newMessage],
-    }));
-  };
-
   const handleThumbsUp = () => {
     const newMessage: Message = {
-      id: message.length + 1,
+      id: Date.now(),
       name: loggedInUserData.name,
       avatar: loggedInUserData.avatar,
       message: "👍",
+      timestamp: new Date().toLocaleTimeString(),
+      isSender: true
     };
-    sendMessage(newMessage);
+    setMessages((prev) => [...prev, newMessage]);
+    sendWebSocketMessage("👍");
     setMessage("");
   };
 
   const handleSend = () => {
     if (message.trim()) {
       const newMessage: Message = {
-        id: message.length + 1,
+        id: Date.now(),
         name: loggedInUserData.name,
         avatar: loggedInUserData.avatar,
         message: message.trim(),
+        timestamp: new Date().toLocaleTimeString(),
+        isSender: true
       };
-      sendMessage(newMessage);
+      setMessages((prev) => [...prev, newMessage]);
+      sendWebSocketMessage(message.trim());
       setMessage("");
 
       if (inputRef.current) {
@@ -70,34 +73,9 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
     }
   };
 
-  const formattedTime = new Date().toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
-    }
-
-    if (!hasInitialResponse) {
-      setisLoading(true);
-      setTimeout(() => {
-        setMessages((messages) => [
-          ...messages.slice(0, messages.length - 1),
-          {
-            id: messages.length + 1,
-            avatar:
-              "https://images.freeimages.com/images/large-previews/971/basic-shape-avatar-1632968.jpg?fmt=webp&h=350",
-            name: "Jane Doe",
-            message: "Awesome! I am just chilling outside.",
-            timestamp: formattedTime,
-          },
-        ]);
-        setisLoading(false);
-        setHasInitialResponse(true);
-      }, 2500);
     }
   }, []);
 

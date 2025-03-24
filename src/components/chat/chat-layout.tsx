@@ -12,6 +12,7 @@ import { Sidebar } from "../sidebar";
 import { Chat } from "./chat";
 import api from "@/services/api";
 import { Loader2 } from "lucide-react";
+import useChatStore from "@/hooks/use-chat-store";
 
 interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
@@ -64,10 +65,14 @@ export function ChatLayout({
   const [isMobile, setIsMobile] = useState(false);
   const [chats, setChats] = useState<Chat[]>([]);
   const [loading, setLoading] = useState(true);
+  const setSelectedChatStore = useChatStore((state) => state.setSelectedChat);
+
+  console.log('selectedChat', selectedChat);
 
   const handleNewChat = (newChat: Chat) => {
     setChats((prevChats) => [...prevChats, newChat]);
     setSelectedChat(newChat);
+    setSelectedChatStore(newChat);
   };
 
   useEffect(() => {
@@ -91,6 +96,7 @@ export function ChatLayout({
         setChats(mappedIndividualChats);
         if (mappedIndividualChats.length > 0) {
           setSelectedChat(mappedIndividualChats[0]);
+          setSelectedChatStore(mappedIndividualChats[0]);
         }
       } catch (error) {
         console.error('Error fetching chats:', error);
@@ -99,7 +105,7 @@ export function ChatLayout({
       }
     };
     fetchChats();
-  }, []);
+  }, [setSelectedChatStore]);
 
   useEffect(() => {
     const checkScreenWidth = () => {
@@ -112,6 +118,11 @@ export function ChatLayout({
       window.removeEventListener("resize", checkScreenWidth);
     };
   }, []);
+
+  const handleChatSelect = (chat: Chat) => {
+    setSelectedChat(chat);
+    setSelectedChatStore(chat);
+  };
 
   if (loading) {
     return (
@@ -151,7 +162,7 @@ export function ChatLayout({
           isCollapsed={isCollapsed || isMobile}
           chats={chats}
           selectedChat={selectedChat}
-          onChatSelect={setSelectedChat}
+          onChatSelect={handleChatSelect}
           isMobile={isMobile}
           onNewChat={handleNewChat}
         />
