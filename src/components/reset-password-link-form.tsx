@@ -23,13 +23,13 @@ export function ResetPasswordLinkForm() {
       <CardContent>
         <div className="text-center text-sm">
           Changed your password?{" "}
-          <Link href="/signin" className="underline">
+          <Link id="Login" href="/signin" className="underline">
             Log in
           </Link>
         </div>
         <div className="mt-4 text-center text-sm">
           Didn&apos;t receive an email?{" "}
-          <Link href="/forgot-password" className="underline">
+          <Link id="forgotpassword" href="/forgot-password" className="underline">
             Try again
           </Link>
         </div>
